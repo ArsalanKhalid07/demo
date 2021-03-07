@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Config from './utils/umair'
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends React.Component {
+  constructor(props){
+    super(props)
+  
+  this.state = {
+    persons: [],
+    get:''
+  }
+  }
+  componentDidMount() {
+    this.setState({get:Config.data1()})
+    console.log('this is umair',Config.data1())
+    axios.get(`https://jsonplaceholder.typicode.com/users`)
+      .then(res => {
+        const persons = res.data;
+        this.setState({ persons });
+      })
+  }
+
+  render() {
+    return (
+      // this.setState({get:umair})
+      <div>
+        {this.state.get}
+        {this.state.persons.map(person =>
+        <div>
+       Name :{person.name}
+        <hr/>
+        Email: {person.email}
+        </div>
+        )}
+      
+      </div>
+    )
+  }
 }
-
-export default App;
